@@ -1,57 +1,63 @@
+var path,boy, leftBoundary,rightBoundary;
+var pathImg,boyImg;
+var i;
 
-function setup() {
-  createCanvas(400,400);
-  
-  box = createSprite(200,200,30,30);
-
+function preload(){
+  pathImg = loadImage("path.png");
+  boyImg = loadAnimation("Runner-1.png","Runner-2.png");
 }
 
-function draw() 
-{
-  background(51);
-
-  // escreva o código para alterar a cor de fundo 
-  // para vermelho quando a seta para direita (RIGHT_ARROW) for pressionada
- 
-  if (keyIsDown(RIGHT_ARROW)){
-    box.position.x = box.position.x +5;
-  }
-  if (keyIsDown(LEFT_ARROW)){
-    box.position.x = box.position.x -5;
-  }
-  if (keyIsDown(UP_ARROW)){
-    box.position.y = box.position.y -5;
-  }
-  if (keyIsDown(DOWN_ARROW)){
-    box.position.y = box.position.y +5;
-  }
+function setup(){
   
-  if (keyIsDown(RIGHT_ARROW)) 
-  {
-    background("red");
-    
-  }
+  createCanvas(400,400);
   
+// Moving background
+path=createSprite(200,200);
+path.addImage(pathImg);
+path.velocityY = 4;
+path.scale=1.2;
 
-  if (keyIsDown(LEFT_ARROW)) 
-  {
-    background("blue");
-    
-  }
- 
-    if (keyIsDown(UP_ARROW)) 
-  {
-    background("yellow");
-   
-  }
+//creating boy running
+boy = createSprite(180,340,30,30);
+boy.scale=0.08;
+boy.addAnimation("JakeRunning",boyImg);
+  
+// create left Boundary
+leftBoundary=createSprite(0,0,100,800);
+leftBoundary.invisible = false;
+//leftBoundary.visible = true;
+//leftBoundary.isvisible = false;
+//leftBoundary.visible = false;
 
-  if (keyIsDown(DOWN_ARROW)) 
-  {
-    background("green");
-  }
+//create right Boundary
+rightBoundary=createSprite(410,0,100,800);
+rightBoundary.visible = false;
+}
 
+function draw() {
+  background(0);
+  path.velocityY = 4;
+  
+  // boy moving on Xaxis with mouse
+  boy.x = World.mouseX;
+  
+  edges= createEdgeSprites();
+  boy.collide(edges[3]);
+  boy.collide(leftBoundary);
+  boy.collide(rightBoundary);
+  
+  //code to reset the background
+ /* if(path.y < 400 ){
+    path.y = height*2;
+  } */
 
+  /*  if(path.y > 400 ){
+    path.y = height/2;
+  } */
+
+   if(path.y > 400 ){
+    path.y = width/2;
+  } 
   
   drawSprites();
 }
-
